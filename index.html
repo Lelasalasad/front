@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8" />
+  <link rel="icon" href="/lo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+
+  <link rel="manifest" href="/manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nabla&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <title>WalletPro</title>
+
+</head>
+
+<body>
+  
+    <div class="coin" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="coin" style="left: 50%; animation-delay: 1s;"></div>
+    <!-- يمكنك إضافة عدد أقل من العناصر -->
+  
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script>
+    const container = document.body; // أو أي عنصر آخر
+    const coinCount = 3; // عدد النقود
+  
+    for (let i = 0; i < coinCount; i++) {
+      const coin = document.createElement('div');
+      coin.className = 'coin';
+      coin.style.left = `${Math.random() * 100}%`; // موقع عشوائي
+      coin.style.animationDelay = `${Math.random() * 5}s`; // تأخير عشوائي
+      container.appendChild(coin);
+    }
+  </script>
+  <script type="module" src="/src/main.jsx"></script> 
+</body>
+
+</html>
