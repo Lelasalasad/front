@@ -1,43 +1,96 @@
-import React, { createContext, useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import React, { createContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 export const AppContext = createContext();
 
-export const AppProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [wallet, setWallet] = useState({
-    
-        USD: 100,
-        TRY:50,
-        
-        SYP: 1000,
-        BTC:0.5,
-        ETH: 2, 
+const AppProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [wallet, setWallet] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+const [loadingUser, setLoadingUser] = useState(true);
+
+
+ const fetchProfile = async () => {
+const token = localStorage.getItem('token');
+    console.log('fetchProfile token =', token);
+  if (!token) {
+    setLoadingUser(false);
+    return;
+  }
+
+  try {
+    const profileRes = await axios.get('http://127.0.0.1:8000/api/profile', {
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    const updateWallet = (amount, currency) => {
-        setWallet(prevWallet => {
-            const currentBalance = prevWallet[currency] || 0;
-            const newBalance = currentBalance + amount;
+    let userData = profileRes.data.data;
 
-            if (newBalance < 0) {
-                console.error(`Insufficient funds in ${currency}. Current balance: ${currentBalance}, trying to deduct: ${-amount}`);
-                toast.error(`Insufficient funds in ${currency}. Current balance: ${currentBalance}, trying to deduct: ${-amount}`);
-                return prevWallet; 
-            }
-            
+    const walletsRes = await axios.get('http://127.0.0.1:8000/api/wallets', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-            
-            return {
-                ...prevWallet,
-                [currency]: newBalance,
-            };
-        });
-    };
+    const allUsers = walletsRes.data.data;
+    const currentUserWithWallet = allUsers.find(u => u.email === userData.email);
 
-    return (
-        <AppContext.Provider value={{ user, setUser, wallet, updateWallet }}>
-            {children}
-        </AppContext.Provider>
-    );
+    if (currentUserWithWallet) {
+      userData = {
+        ...userData,
+        account_number: currentUserWithWallet.account_number || '',
+      };
+      // خزّن رقم الحساب في localStorage
+      localStorage.setItem('account_number', userData.account_number);
+
+      const walletData = {};
+      currentUserWithWallet.wallets.forEach(w => {
+        walletData[w.currency_code] = parseFloat(w.balance);
+      });
+      setWallet(walletData);
+    } else {
+      setWallet(null);
+      // لو ما في حساب، نمسح رقم الحساب
+      localStorage.removeItem('account_number');
+    }
+
+    setUser(userData);
+    console.log('User data fetched:', userData);
+
+    // خزّن حالة الأدمن في state و localStorage
+    const storedAdmin = localStorage.getItem('isAdmin') === 'true';
+    setIsAdmin(storedAdmin);
+    console.log('isAdmin from localStorage =', storedAdmin);
+
+  } catch (err) {
+    console.error('Error fetching profile or wallets:', err);
+  } finally {
+    setLoadingUser(false);
+  }
 };
+
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  return (
+    <AppContext.Provider
+      value={{
+        user,
+        wallet,
+        isAdmin,
+        setUser,
+        setWallet,
+        setIsAdmin,
+        fetchProfile,
+        loadingUser,
+
+      }}
+    >
+      <ToastContainer position="top-right" autoClose={3000} />
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+export default AppProvider;

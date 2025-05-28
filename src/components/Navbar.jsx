@@ -1,91 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaBars, FaTimes, FaSignInAlt, FaSignOutAlt, FaUserPlus } from 'react-icons/fa'; // استيراد الأيقونات
+import { 
+  FaUserCircle, FaUserShield, FaWallet, FaHistory, FaBars, FaTimes, 
+  FaSignInAlt, FaSignOutAlt, FaUserPlus, FaHome, FaMoneyBillWave 
+} from 'react-icons/fa'; 
+import { MdLanguage } from "react-icons/md";
 import '../App.css';
 import { useTranslation } from 'react-i18next';
+import { AppContext } from './AppContext';
 
 const Navbar = ({ toggleDarkMode, darkMode }) => {
   const { t, i18n } = useTranslation();
-  const location = useLocation();
-  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleScroll = () => {
-    setScrolled(window.scrollY > 50);
-  };
+  const { user, isAdmin } = useContext(AppContext);
 
   useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem('language', lang);
-  };
-
-  const token = localStorage.getItem('token');
-  const menuIconStyle = {
-    fontSize: '9rem', 
-   
-    marginRight: '30px',
-
-
-  };
   return (
-    <motion.nav
-      className={`navbar ${scrolled ? 'scrolled' : ''}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="navbar-container">
-        <img src="/lo.png" alt="Logo" className="logo" />
+    <motion.nav className={`navbar${scrolled ? ' scrolled' : ''}`}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+      
+      <div className="menu-icon" onClick={toggleMenu}>
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </div>
 
-        <div className="menu-icon" onClick={toggleMenu} style={menuIconStyle}>
-          {menuOpen ? <FaTimes className="menu-toggle" /> : <FaBars className="menu-toggle" />}
-        </div>
+      <img src="/lo.png" alt="Logo" className="logo" />
 
-        <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
-          {!token && <li><Link to="/">{t('Welcome')}</Link></li>}
-          {!token && (
-            <>
-              <li><Link to="/login"><FaSignInAlt /> {t('Login')}</Link></li>
-              <li><Link to="/register"><FaUserPlus /> {t('Register')}</Link></li>
-            </>
-          )}
-          {token && (
-            <>
-              <li><Link to="/operations">{t('Operations')}</Link></li>
-              <li>
-                <Link 
-                  to="/logout" 
-                  onClick={() => {
-                    localStorage.removeItem('token');
-                  }} 
-                >
-                  <FaSignOutAlt /> {t('Logout')}
-                </Link>
-              </li>
-            </>
-          )}
+      <ul className={`nav-links${menuOpen ? ' active' : ''}`}>
+        {user ? (
+          <>
+            <li><Link to="/wallet"><FaWallet /> {t('MyWallet')}</Link></li> 
+            {isAdmin && (
+              <li><Link to="/AdminAccountMovements"><FaUserShield /> {t('AdminAccountMovements')}</Link></li>
+            )}
+            <li><Link to="/UserAccountMovements"><FaHistory /> {t('UserAccountMovements')}</Link></li>
+            <li><Link to="/transactions"><FaMoneyBillWave /> {t('Transactions')}</Link></li>
+            <li><Link to="/profile"><FaUserCircle /> {t('Profile')}</Link></li>
+            <li><Link to="/logout"><FaSignOutAlt /> {t('Logout')}</Link></li>
+          </>
+        ) : (
+          <>
+            <li><Link to="/welcome"><FaHome /> {t('Welcome')}</Link></li>
+            <li><Link to="/register"><FaUserPlus /> {t('Register')}</Link></li>
+            <li><Link to="/login"><FaSignInAlt /> {t('Login')}</Link></li>
+          </>
+        )}
+
+        <div className="nav-footer">
           <li>
-            <button onClick={toggleDarkMode}>
-              {darkMode ? '☀️' : '🌙'}
+            <button onClick={toggleDarkMode}>{darkMode ? '☀️' : '🌙'}</button>
+          </li>
+          <li>
+            <button className='lan' onClick={() => i18n.changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')}>
+              <MdLanguage />
             </button>
           </li>
-          <li>
-            <select onChange={(e) => changeLanguage(e.target.value)} value={localStorage.getItem('language')}>
-              <option value="en">EN</option>
-              <option value="ar">AR</option>
-            </select>
-          </li>
-        </ul>
-      </div>
+        </div>
+      </ul>
     </motion.nav>
   );
 };

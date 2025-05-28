@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from './AppContext';
 import { useTranslation } from 'react-i18next'; 
+import { FaMoneyBillWave, FaPiggyBank, FaCoins } from 'react-icons/fa';
 import '../App.css';
 
 const Word = React.memo(({ word }) => {
@@ -15,7 +16,7 @@ const Welcome = () => {
 
     useEffect(() => {
         if (user) {
-            navigate('/home');
+            navigate('/welcome');
         }
     }, [user, navigate]);
 
@@ -34,21 +35,31 @@ const Welcome = () => {
     const text = t('welcomeMessage'); 
 
     return (
-        <>
-            <div className="welcome-message">
-                <div className="word-wrapper bold-font">
-                    {text.split(' ').map((word, index) => (
-                        <Word key={index} word={word} />
-                    ))}
-                </div>
+        <div className="welcome-container">
+            <div className="word-wrapper bold-font">
+                {text.split(' ').map((word, index) => (
+                    <Word key={index} word={word} />
+                ))}
             </div>
-            <div className="welcome-container container-below-message">
-                <div className="welcome-content">
-                    <p>{t('welcomeDescription')}</p>
-                    <button type="button" onClick={handleSubmit} className="get-started-button">{t('getStarted')}</button>
-                </div>
+
+            {/* صف الأيقونات */}
+            <div className="icon-row">
+                <FaMoneyBillWave className="money-icon" />
+                <FaPiggyBank className="money-icon" />
+                <FaCoins className="money-icon" />
             </div>
-        </>
+
+            <div className="welcome-content">
+                <p>{t('welcomeDescription')}</p>
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="get-started-button"
+                >
+                    {t('getStarted')}
+                </button>
+            </div>
+        </div>
     );
 };
 

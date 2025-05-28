@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import axios from 'axios';
 import { AppContext } from './AppContext'; 
 import { useTranslation } from 'react-i18next'; 
 import '../App.css';
@@ -6,38 +7,76 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Cross_wallet_exchange = () => {
-    const { wallet, updateWallet } = useContext(AppContext);
+const { wallet, fetchProfile } = useContext(AppContext);
     const { t } = useTranslation(); 
     const [amount, setAmount] = useState('');
-    const [fromWallet, setFromWallet] = useState('');
-    const [toWallet, setToWallet] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
     const [currency, setCurrency] = useState('');
-    const [calculatedAmount, setCalculatedAmount] = useState('');
+    const [note, setNote] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (event) => {
+    const token = localStorage.getItem('token');
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const fromBalance = wallet[fromWallet];
 
-        if (parseFloat(amount) > fromBalance) {
-            toast.error(
-                t('insufficientBalance', { wallet: fromWallet, currency })
-            ); // إشعار فشل العملية
+        // التحقق من المدخلات الأساسية
+        if (!amount || parseFloat(amount) <= 0) {
+            toast.error(t('amountGreaterThanZero'));
+            return;
+        }
+        if (!accountNumber) {
+            toast.error(t('accountNumberRequired'));
+            return;
+        }
+        if (!currency) {
+            toast.error(t('currencyRequired'));
             return;
         }
 
-        updateWallet(-parseFloat(amount), fromWallet);
-        updateWallet(parseFloat(amount), toWallet);
-        setCalculatedAmount(amount);
-        toast.success(
-            t('transferSuccess', { amount, fromWallet, toWallet, currency })
-        ); // إشعار نجاح العملية
+        // التحقق من الرصيد في المحفظة
+        const balance = wallet?.[currency] || 0;
+        if (parseFloat(amount) > balance) {
+            toast.error(t('insufficientBalance', { wallet: accountNumber, currency }));
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const res = await axios.post('http://127.0.0.1:8000/api/crosswalletexchange', {
+                account_number: accountNumber,
+                currency,
+                amount,
+                note
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (res.data && res.data.message) {
+
+                toast.success(t('transferSuccess', { amount, accountNumber, currency }));
+                setAmount('');
+                setAccountNumber('');
+                setCurrency('');
+                setNote('');
+                await fetchProfile();
+
+            } else {
+                throw new Error(t('transferFailed'));
+            }
+        } catch (error) {
+            const msg = error.response?.data?.message || error.message || t('transferFailed');
+            toast.error(msg);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="container">
             <div className="form-container">
                 <h2>{t('Cross_wallet_exchange')}</h2>
-                <p>{t('transferDescription')}</p>
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
                         <label>{t('amountToTransfer')}:</label>
@@ -49,6 +88,17 @@ const Cross_wallet_exchange = () => {
                             required 
                         />
                     </div>
+
+                    <div className="input-group">
+                        <label>{t('accountNumber')}:</label>
+                        <input 
+                            type="text" 
+                            placeholder={t('enterAccountNumber')} 
+                            value={accountNumber}
+                            onChange={(e) => setAccountNumber(e.target.value)} 
+                            required 
+                        />
+                    </div>
                     
                     <div className="input-group">
                         <label>{t('currency')}:</label>
@@ -57,42 +107,27 @@ const Cross_wallet_exchange = () => {
                             onChange={(e) => setCurrency(e.target.value)} 
                             required
                         >
-                            <option value="BTC">Bitcoin (BTC)</option>
-                            <option value="ETH">Ethereum (ETH)</option>
-                            </select>
-                    </div>
-
-                    <div className="input-group">
-                        <label>{t('fromWallet')}:</label>
-                        <select 
-                            value={fromWallet} 
-                            onChange={(e) => setFromWallet(e.target.value)} 
-                            required
-                        >
-                            <option value="Wallet1">Wallet 1</option>
-                            <option value="Wallet2">Wallet 2</option>
-                            <option value="Wallet3">Wallet 3</option>
+                            <option value="">{t('Select Currency')}</option>
+                            {Object.keys(wallet || {}).map((cur) => (
+                                <option key={cur} value={cur}>{cur}</option>
+                            ))}
                         </select>
                     </div>
 
                     <div className="input-group">
-                        <label>{t('toWallet')}:</label>
-                        <select 
-                            value={toWallet} 
-                            onChange={(e) => setToWallet(e.target.value)} 
-                            required
-                        >
-                            <option value="Wallet1">Wallet 1</option>
-                            <option value="Wallet2">Wallet 2</option>
-                            <option value="Wallet3">Wallet 3</option>
-                        </select>
+                        <label>{t('note')}:</label>
+                        <textarea 
+                            placeholder={t('enterNote')} 
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)} 
+                        />
                     </div>
 
-                    <h5>{t('estimatedAmount')}: {calculatedAmount} {currency}</h5>
-                    <button type="submit">{t('transfer')}</button>
+                    <button type="submit" disabled={loading}>
+                        {loading ? t('processing') : t('transfer')}
+                    </button>
                 </form>
 
-                {/* إضافة مكوّن ToastContainer لعرض الإشعارات */}
                 <ToastContainer
                     position="top-center"
                     autoClose={3000}
