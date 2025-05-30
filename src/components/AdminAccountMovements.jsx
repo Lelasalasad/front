@@ -1,32 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../App.css';
+import { AppContext } from './AppContext';
+import { FaCalendarAlt } from 'react-icons/fa'; // أيقونة التقويم
 
 const AdminAccountMovements = () => {
   const { t } = useTranslation();
-  const [selectedTab, setSelectedTab] = useState('pending'); // 'pending' or 'transactions'
-  const [transactions, setTransactions] = useState([]);
-  const [pendingWithdrawals, setPendingWithdrawals] = useState([]);
+  const { fetchProfile } = useContext(AppContext);
 
   const token = localStorage.getItem('token');
+  const [selectedTab, setSelectedTab] = useState('pending'); // 'pending' or 'history'
+  const [pendingWithdrawals, setPendingWithdrawals] = useState([]);
+  const [history, setHistory] = useState([]);
+
+  // حالات فلترة التاريخ
+  const [showDateFilter, setShowDateFilter] = useState(false);
+  const [filterDate, setFilterDate] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
 
-        // فقط الطلبات المعلقة حالياً
-        const withdrawalsRes = await axios.get('http://127.0.0.1:8000/api/admin/withdrawals', { headers });
+        // طلبات السحب المعلّقة
+        const withdrawalsRes = await axios.get(
+          'http://127.0.0.1:8000/api/admin/withdrawals',
+          { headers }
+        );
         const pending = withdrawalsRes.data.filter(w => w.status === 'pending');
         setPendingWithdrawals(pending);
 
-        // الحركات المستقبلية (معطلة مؤقتاً)
-        // const txnRes = await axios.get('http://127.0.0.1:8000/api/admin/transactions', { headers });
-        // setTransactions(txnRes.data);
+        // سجل العمليات
+        const historyRes = await axios.get(
+          'http://127.0.0.1:8000/api/admin/history',
+          { headers }
+        );
+        setHistory(historyRes.data.history.data || []);
       } catch (error) {
         toast.error(t('Failed to fetch data'));
         console.error(error);
@@ -36,19 +49,25 @@ const AdminAccountMovements = () => {
     fetchData();
   }, [token, t]);
 
-  const approveWithdrawal = async (id) => {
+  const approveWithdrawal = async id => {
     try {
-      await axios.post(`http://127.0.0.1:8000/api/admin/withdrawals/${id}/approve`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.post(
+        `http://127.0.0.1:8000/api/admin/withdrawals/${id}/approve`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       toast.success(t('Withdrawal approved successfully'));
+      fetchProfile();
       setPendingWithdrawals(pendingWithdrawals.filter(w => w.id !== id));
     } catch (error) {
       toast.error(error.response?.data?.message || t('Approval failed'));
     }
   };
+
+  // فلترة سجل العمليات حسب التاريخ إذا تم اختياره
+  const filteredHistory = filterDate
+    ? history.filter(txn => txn.created_at.startsWith(filterDate))
+    : history;
 
   return (
     <motion.div
@@ -69,43 +88,127 @@ const AdminAccountMovements = () => {
             {t('Pending Withdrawals')}
           </button>
           <button
-            className={selectedTab === 'transactions' ? 'active' : ''}
-            onClick={() => setSelectedTab('transactions')}
-            disabled
+            className={selectedTab === 'history' ? 'active' : ''}
+            onClick={() => setSelectedTab('history')}
           >
-            {t('Users Transactions')}
+            {t('Transaction History')}
           </button>
         </div>
 
-        {/* محتوى التبويبات */}
+        {/* تبويب طلبات السحب */}
         {selectedTab === 'pending' && (
-          <>
+          <div className="pending-section">
             {pendingWithdrawals.length === 0 ? (
-              <p>{t('No pending requests')}</p>
+              <p>{t('No pending withdrawals')}</p>
             ) : (
-              <ul className="transactions-list">
-                {pendingWithdrawals.map((w) => (
-                  <li key={w.id} className="transaction-item">
-                    <p><strong>{t('User')}:</strong> {w.full_name}</p>
-                    <p><strong>{t('Amount')}:</strong> {w.amount} {w.currency}</p>
-                    <p><strong>{t('Company')}:</strong> {w.transfer_company_name}</p>
-                    <p><strong>{t('Note')}:</strong> {w.note}</p>
-                    <button onClick={() => approveWithdrawal(w.id)}>
-                      {t('Approve')}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <table className="pending-table">
+                <thead>
+                  <tr>
+                    <th>{t('ID')}</th>
+                    <th>{t('User ID')}</th>
+                    <th>{t('Amount')}</th>
+                    <th>{t('Currency')}</th>
+                    <th>{t('Date')}</th>
+                    <th>{t('Actions')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pendingWithdrawals.map(withdrawal => (
+                    <tr key={withdrawal.id}>
+                      <td>{withdrawal.id}</td>
+                      <td>{withdrawal.user_id}</td>
+                      <td>{withdrawal.amount}</td>
+                      <td>{withdrawal.currency}</td>
+                      <td>
+                        {new Date(withdrawal.created_at).toLocaleString()}
+                      </td>
+                      <td>
+                        <button
+                          className="approve-btn"
+                          onClick={() => approveWithdrawal(withdrawal.id)}
+                        >
+                          {t('Approve')}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
-          </>
+          </div>
         )}
 
-        {selectedTab === 'transactions' && (
-          <p style={{ opacity: 0.6 }}>{t('Feature coming soon')}</p>
-        )}
+        {/* تبويب سجل العمليات */}
+        {selectedTab === 'history' && (
+          <div className="history-section">
+            {/* أيقونة فلترة التاريخ في العنوان */}
+            <div className="flex items-center justify-between">
+              <h3>{t('Transaction History')}</h3>
+              <FaCalendarAlt
+                className="cursor-pointer text-2xl ml-auto"
+                onClick={() => setShowDateFilter(prev => !prev)}
+                title={t('Filter by date')}
+              />
+            </div>
 
-        <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+            {/* حقل اختيار التاريخ */}
+            {showDateFilter && (
+              <div className="mb-4">
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={e => setFilterDate(e.target.value)}
+                  className="p-2 border rounded"
+                />
+                {filterDate && (
+                  <button
+                    onClick={() => setFilterDate('')}
+                    className="ml-2 p-2 bg-gray-200 rounded"
+                  >
+                    {t('Clear')}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {filteredHistory.length === 0 ? (
+              <p>{t('No transactions found')}</p>
+            ) : (
+              <table className="history-table">
+                <thead>
+                  <tr>
+                    <th>{t('ID')}</th>
+                    <th>{t('User ID')}</th>
+                    <th>{t('Type')}</th>
+                    <th>{t('Currency')}</th>
+                    <th>{t('Amount')}</th>
+                    <th>{t('Balance Before')}</th>
+                    <th>{t('Balance After')}</th>
+                    <th>{t('Note')}</th>
+                    <th>{t('Date')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredHistory.map(txn => (
+                    <tr key={txn.id}>
+                      <td>{txn.id}</td>
+                      <td>{txn.user_id}</td>
+                      <td>{txn.type}</td>
+                      <td>{txn.currency}</td>
+                      <td>{txn.amount}</td>
+                      <td>{txn.balance_before}</td>
+                      <td>{txn.balance_after}</td>
+                      <td>{txn.note}</td>
+                      <td>{new Date(txn.created_at).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
       </div>
+      <ToastContainer />
     </motion.div>
   );
 };

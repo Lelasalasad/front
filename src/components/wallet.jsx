@@ -64,10 +64,10 @@ const Wallet = () => {
             >
               <h3 className="currency-label">{cur}</h3>
               <p className="currency-value">
-                {cur === 'USD' && '$'}
-                {cur === 'TRY' && '₺'}
+                {cur === 'USD' }
+                {cur === 'TRY' }
                 {wallet && wallet[cur] ? wallet[cur].toFixed(2) : '0.00'}{' '}
-                {cur === 'SYP' && 'SYP'}
+                {cur === 'SYP' }
               </p>
             </div>
           ))}

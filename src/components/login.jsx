@@ -63,12 +63,12 @@ const Login = () => {
 
   return (
     <motion.div
-      className="container log"
+      className="container "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="form-container log">
+      <div className="form-container ">
         <h2>{t('login')}</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="input-group">

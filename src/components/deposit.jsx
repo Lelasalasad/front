@@ -75,7 +75,7 @@ const Deposit = () => {
                 <h2>{t('deposit')}</h2>
                 <form onSubmit={handleDeposit}>
                     <div className="input-group">
-                        <label>{t('accountNumber')}</label>
+                        <label>{t('AccountNumber')}</label>
                         <input 
                             type="text" 
                             placeholder={t('accountNumber')} 

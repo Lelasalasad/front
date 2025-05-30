@@ -90,7 +90,7 @@ const { wallet, fetchProfile } = useContext(AppContext);
                     </div>
 
                     <div className="input-group">
-                        <label>{t('accountNumber')}:</label>
+                        <label>{t('AccountNumber')}:</label>
                         <input 
                             type="text" 
                             placeholder={t('enterAccountNumber')} 

@@ -7,10 +7,10 @@ i18n
     resources: {
       en: {
         translation: {
-          welcome: "Welcome",
-          login: "Login",
+          Welcome: "Welcome",
+          Login: "Login",
           loginSuccess: "loginSuccess",
-          register: "Register",
+          Register: "Register",
           deposit: "Deposit Funds",
           depositErrorInvalidAmount: "Invalid deposit amount. Please enter a value greater than zero.",
           depositSuccess: "Successfully deposited {{amount}} {{currency}}. New balance: {{newBalance}}.",
@@ -18,7 +18,7 @@ i18n
           amount: "Amount",
           currency: "Currency",
           insufficientFunds: "Insufficient funds in {{currency}}.",
-          transactions: "Transactions",
+          Transactions: "Transactions",
           amountGreaterThanZero: "Amount must be greater than zero.",
           exchangeSuccess: "Successfully exchanged {{amount}} {{currency}}.",
           withdraw: "Withdraw Funds",
@@ -97,22 +97,40 @@ i18n
   AdminAccountMovements: "Users Transactions",
   UserAccountMovements: "My Account Movements",
       welcomeUser: "Welcome, {{name}}",
-MyWallet:"my wallet",
+MyWallet:"My Wallet",
  PendingWithdrawals: "Pending Withdrawals",
   Approve: "Approve",
   Nopendingrequests: "No pending requests",
   Withdrawalapprovedsuccessfully: "Withdrawal approved successfully",
-  Approvalfailed: "Approval failed"
+  Approvalfailed: "Approval failed",
+    BirthDate:"Birth Date",
+      ID: "ID",
+  Type: "Type",
+  Currency: "Currency",
+  Amount: "Amount",
+  Before: "Balance Before",
+  After: "Balance After",
+  Note: "Note",
+  Date: "Date",
+  No_transactions_found: "No transactions found",
+  withdrawal: "Withdrawal",
+  currency_exchange_out: "Currency Exchange - Out",
+  currency_exchange_in: "Currency Exchange - In",
+  transfer_sent: "Transfer Sent",
+  transfer_received: "Transfer Received",
+
+
+
 
 
         },
       },
       ar: {
         translation: {
-          welcome: "الرئيسية",
-          login: "تسجيل الدخول",
+          Welcome: "الرئيسية",
+          Login: "تسجيل الدخول",
           loginSuccess: "تم تسجيل الدخول بنجاح",
-          register: "تسجيل",
+          Register: "تسجيل",
           deposit: "إيداع الأموال",
           depositErrorInvalidAmount: "المبلغ المُدخل غير صالح. يرجى إدخال قيمة أكبر من صفر.",
           depositSuccess: "تم إيداع {{amount}} {{currency}} بنجاح. الرصيد الجديد: {{newBalance}}.",
@@ -120,7 +138,7 @@ MyWallet:"my wallet",
           amount: "المبلغ",
           currency: "العملة",
           insufficientFunds: "لا يوجد رصيد كافٍ في {{currency}}.",
-         transactions: "المعاملات المالية",
+         Transactions: "المعاملات المالية",
           amountGreaterThanZero: "يجب أن يكون المبلغ أكبر من صفر.",
           exchangeSuccess: "تم تحويل {{amount}} من {{currency}} بنجاح.",
           withdraw: "سحب الأموال",
@@ -204,7 +222,24 @@ MyWallet:"my wallet",
   Approve: "قبول",
   Nopendingrequests: "لا توجد طلبات معلقة",
   Withdrawalapprovedsuccessfully: "تمت الموافقة على طلب السحب بنجاح",
-  Approvalfailed: "فشل في عملية القبول"
+  Approvalfailed: "فشل في عملية القبول",
+  BirthDate:"تاريخ الميلاد",
+    ID: "المعرف",
+  Type: "النوع",
+  Currency: "العملة",
+  Amount: "المبلغ",
+  Before: "الرصيد قبل",
+  After: "الرصيد بعد",
+  Note: "ملاحظة",
+  Date: "التاريخ",
+  No_transactions_found: "لا توجد حركات",
+  withdrawal: "سحب",
+  currency_exchange_out: "صرف عملة - خصم",
+  currency_exchange_in: "صرف عملة - إضافة",
+  transfer_sent: "تحويل صادر",
+  transfer_received: "تحويل وارد",
+
+
 
 
 

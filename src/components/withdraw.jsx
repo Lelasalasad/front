@@ -114,31 +114,29 @@ const Withdraw = () => {
                                 <label>{t('Transfer Company')}:</label>
                                 <input type="text" value={company} onChange={(e) => setCompany(e.target.value)} required />
                             </div>
-                            <div className="input-group">
-                                <label>{t('Note')}:</label>
-                                <input type="text" value={note} onChange={(e) => setNote(e.target.value)} />
-                            </div>
+                           
                             <div className="input-group">
                                 <label>{t('Password')}:</label>
                                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                             </div>
+                            
                         </>
                     )}
 
                     {isAdmin && (
                         <div className="input-group">
-                            <label>{t('Account Number')}:</label>
+                            <label>{t('AccountNumber')}:</label>
                             <input type="text" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
                         </div>
                     )}
 
                     <div className="input-group">
-                        <label>{t('Amount')}:</label>
+                        <label>{t('amount')}:</label>
                         <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} required />
                     </div>
 
                     <div className="input-group">
-                        <label>{t('Currency')}:</label>
+                        <label>{t('currency')}:</label>
                         <select value={currency} onChange={(e) => setCurrency(e.target.value)} required>
                             <option value="">{t('Select Currency')}</option>
                             <option value="USD">{t('USD')}</option>
@@ -146,6 +144,15 @@ const Withdraw = () => {
                             <option value="SYP">{t('SYP')}</option>
                         </select>
                     </div>
+                     <div className="input-group">
+      <label>{t('Note')}:</label>
+      <textarea
+        placeholder={t('enterNote')}
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        className="note-textarea"
+      />
+    </div>
 
                     <button type="submit" disabled={loading}>
                         {loading ? t('Processing...') : t('Withdraw')}

@@ -1,27 +1,35 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import '../App.css';
 import { useTranslation } from 'react-i18next';
-import { loginUser } from '../services/api';
-import { AppContext } from './AppContext';
+import axios from 'axios';
+import { FaCalendarAlt } from 'react-icons/fa'; // أيقونة التقويم
 
 const UserAccountMovements = () => {
   const { t } = useTranslation();
-  const { user } = useContext(AppContext);
+  const token = localStorage.getItem('token');
   const [transactions, setTransactions] = useState([]);
+  const [showDateFilter, setShowDateFilter] = useState(false);
+  const [filterDate, setFilterDate] = useState('');
 
   useEffect(() => {
-    const getTransactions = async () => {
-      if (!user?.id) return;
+    const fetchHistory = async () => {
       try {
-        const res = await loginUser(user.id);
-        setTransactions(res.data);
+        const res = await axios.get('http://127.0.0.1:8000/api/history', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setTransactions(res.data.history?.data || []);
       } catch (error) {
-        console.error("Error fetching user transactions:", error);
+        console.error("Error fetching history:", error);
       }
     };
-    getTransactions();
-  }, [user?.id]);
+    if (token) fetchHistory();
+  }, [token]);
+
+  // فلترة المعاملات حسب التاريخ المختار (YYYY-MM-DD)
+  const filtered = filterDate
+    ? transactions.filter(txn => txn.created_at.startsWith(filterDate))
+    : transactions;
 
   return (
     <motion.div
@@ -31,16 +39,68 @@ const UserAccountMovements = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="form-container log">
-        <h2>{t('UserAccountMovements')}</h2>
-        <ul className="transactions-list">
-          {transactions.map((txn) => (
-            <li key={txn.id} className="transaction-item">
-              <p><strong>{t('amount')}: </strong> {txn.amount}</p>
-              <p><strong>{t('date')}: </strong> {txn.date}</p>
-              <p><strong>{t('status')}: </strong> {txn.status}</p>
-            </li>
-          ))}
-        </ul>
+        <h2 className="flex items-center w-full">
+  {t('UserAccountMovements')}
+  <FaCalendarAlt
+    className="cursor-pointer ml-auto text-2xl"
+    onClick={() => setShowDateFilter(prev => !prev)}
+    title={t('Filter by date')}
+  />
+</h2>
+
+
+        {/* حقل اختيار التاريخ */}
+        {showDateFilter && (
+          <div className="mb-4">
+            <input
+              type="date"
+              value={filterDate}
+              onChange={e => setFilterDate(e.target.value)}
+              className="p-2 border rounded"
+            />
+            {filterDate && (
+              <button
+                onClick={() => setFilterDate('')}
+                className="ml-2 p-2 bg-gray-200 rounded"
+              >
+                {t('Clear')}
+              </button>
+            )}
+          </div>
+        )}
+
+        {filtered.length === 0 ? (
+          <p>{t('No transactions found')}</p>
+        ) : (
+          <table className="history-table">
+            <thead>
+              <tr>
+                <th>{t('ID')}</th>
+                <th>{t('Type')}</th>
+                <th>{t('Currency')}</th>
+                <th>{t('Amount')}</th>
+                <th>{t('Before')}</th>
+                <th>{t('After')}</th>
+                <th>{t('Note')}</th>
+                <th>{t('Date')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(txn => (
+                <tr key={txn.id}>
+                  <td>{txn.id}</td>
+                  <td>{t(txn.type)}</td>
+                  <td>{txn.currency}</td>
+                  <td>{txn.amount}</td>
+                  <td>{txn.balance_before}</td>
+                  <td>{txn.balance_after}</td>
+                  <td>{txn.note}</td>
+                  <td>{new Date(txn.created_at).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </motion.div>
   );

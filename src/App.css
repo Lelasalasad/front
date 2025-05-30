@@ -819,7 +819,7 @@ margin-left: 200px;
   padding: 30px 20px;
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  text-align: center;
+  text-align: end;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-color: #286db3;
 }
@@ -881,13 +881,17 @@ margin-left: 200px;
 }
 
 .currency-label {
-  font-size: 1.5rem;
+  font-size: 2.6rem;
   margin-bottom: 10px;
-  color: #fff;
+  color: #0b0101;
+    text-shadow: 0 8px 20px rgb(6, 0, 0);
+
 }
 .currency-value {
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: bold;
+  text-shadow: 0 8px 20px rgba(242, 222, 222, 0.4);
+
 }
 .card.balance-card:hover {
   transform: translateY(-5px);
@@ -917,4 +921,58 @@ margin-left: 200px;
 .tabs button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.pending-table,
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.pending-table th,
+.pending-table td,
+.history-table th,
+.history-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.pending-table th {
+  background-color: #f2f2f2;
+}
+
+.approve-btn {
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.approve-btn:hover {
+  background-color: #45a049;
+}
+.form-container.log{
+  max-width: 1200px;
+
+}
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 14px;
+}
+
+.history-table th,
+.history-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.history-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
