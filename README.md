@@ -1,157 +1,128 @@
-# Project Overview
+# 💰 Cryptocurrency Wallet Web Application
 
-This is a cryptocurrency wallet web application focused on Bitcoin, offering dynamic, user-friendly interfaces and seamless integration with a Laravel backend and blockchain functionality.
+A web application focused on **Bitcoin wallet management and exchange**, built with **React + Vite** for the frontend, integrated with a **Laravel backend** and **blockchain functionality**.
 
-Components
+---
 
-1. Navbar.jsx
-   Contains: Logo (Bitcoin), Navigation Options.
+## 📚 Overview
 
-Pre-login: Welcome, Login, Register.
+This project offers a dynamic and user-friendly interface that enables users to manage wallets, exchange currencies, and perform operations such as deposits and withdrawals.
 
-Post-login: Logout, Operations.
+---
 
-Features:
+## 🧩 Components
 
-Day/Night mode toggle.
+### 1. `Navbar.jsx`
+- **Displays**:
+  - Logo (Bitcoin)
+  - Navigation links
+    - Pre-login: `Welcome`, `Login`, `Register`
+    - Post-login: `Logout`, `Operations`
+- **Features**:
+  - Dark/Light mode toggle
+  - Language switcher (i18n)
+  - Hamburger menu for mobile
+  - Persistent across all pages
 
-Language switcher (i18n integration).
+### 2. `Welcome.jsx`
+- Welcome message and brief description
+- **Button**: “Get Started” → `Login.jsx`
 
-Hamburger menu for mobile view.
+### 3. `Login.jsx`
+- **Form Fields**: Email, Password
+- **Button**: Log in (saves token and redirects to `Operation.jsx`)
+- **Links**:
+  - Forgot Password → `ForgotPassword.jsx`
+  - Register Here → `Register.jsx`
 
-Persistent across all pages.
+### 4. `Register.jsx`
+- **Form Fields**: First Name, Last Name, Email, Password, Confirm Password
+- **Button**: Register → redirects to `Login.jsx`
 
-2. Welcome.jsx
-   Elements:
+### 5. `Operation.jsx`
+- Navigation to main operations:
+  - Wallet Management
+  - In-Wallet Exchange
+  - Cross-Wallet Exchange
+  - Withdraw
+  - Deposit
 
-Welcome text and brief project description.
+### 6. `Logout.jsx`
+- Logs out user and removes authentication token
 
-Button: "Get Started" leading to Login.jsx.
+---
 
-3. Login.jsx
-   Form Elements:
+## ⚙️ Functional Pages
 
-Input fields: Email, Password.
+### 7. `WalletManagement.jsx`
+- **Fields**: Transaction Type (Add/Deduct), Currency Type, Amount
+- **Button**: Submit Transaction
 
-Button: Log in (stores token and redirects to Operation.jsx).
+### 8. `InWalletExchange.jsx`
+- **Fields**: Amount, From Currency, To Currency
+- **Button**: Convert
 
-Links:
+### 9. `CrossWalletExchange.jsx`
+- **Fields**: Amount, From Wallet, To Wallet
+- **Button**: Transfer
 
-Forgot Password → ForgotPassword.jsx.
+### 10. `Withdraw.jsx`
+- **Fields**: Amount, Operation Type (Request)
+- **Button**: Submit Withdrawal Request (awaiting admin approval)
 
-Register Here → Register.jsx.
+### 11. `Deposit.jsx`
+- **Fields**: Amount, Operation Type
+- **Button**: Submit Deposit
 
-4. Register.jsx
-   Form Elements:
+---
 
-Input fields: First Name, Last Name, Email, Password, Confirm Password.
+## 🚀 Features
 
-Button: Register (redirects to Login.jsx).
+### 🔌 Axios Integration
+- Handles API requests (`login`, `register`, etc.) with Laravel backend
 
-5. Operation.jsx
-   Buttons (navigate to subpages):
+### 🌐 Global State Management
+- Shared user/authentication state using `AppContext.jsx`
 
-Wallet Management
+### 🎨 Visual Effects
+- Framer Motion animations
+- Lazy loading for performance
+- Falling coin animation on initial load
 
-IN Wallet Exchange
+### 🧭 Routing
+- Implemented using `React Router` with `Suspense` for smooth transitions
+- Includes modals and popups
 
-Cross Wallet Exchange
+### 🌍 Multilingual Support
+- i18n integration for internationalization
 
-Withdraw
+---
 
-Deposit
+## 🗂️ Additional Files
 
-6. Logout.jsx
-   Logs out the user and removes the authentication token.
+- `app.css` – Global styling and responsive design
+- `App.jsx` – Root component for routing and context
+- `api.jsx` – API service layer for backend communication
 
-7. WalletManagement.jsx
-   Fields:
+---
 
-Transaction Type: Add or Deduct
+## ⚡ Tech Stack
 
-Currency Type
+- **Frontend**: React + Vite
+- **Backend**: Laravel (PHP)
+- **Blockchain**: Wallet integration handled externally
+- **Routing**: React Router
+- **Styling**: CSS + Motion effects
+- **Languages**: i18n support
+- **Build Tool**: Vite with HMR and ESLint
 
-Amount
+---
 
-Button: Submit Transaction
+## ✅ Future Enhancements
+- Two-factor authentication
+- Transaction history filtering
+- Admin dashboard for withdrawal approvals
 
-8. InWalletExchange.jsx
-   Fields:
+---
 
-Amount
-
-From Currency
-
-To Currency
-
-Button: Convert
-
-9. CrossWalletExchange.jsx
-   Fields:
-
-Amount
-
-From Wallet
-
-To Wallet
-
-Button: Transfer
-
-10. Withdraw.jsx
-    Fields:
-
-Amount
-
-Operation Type (Request)
-
-Button: Submit Withdrawal Request (pending admin approval)
-
-11. Deposit.jsx
-    Fields:
-
-Amount
-
-Operation Type
-
-Button: Submit Deposit
-
-Features
-Axios Integration:
-
-Handles login, register, and other API operations through Laravel backend endpoints.
-
-Global State Management:
-
-Implemented using AppContext.jsx to share user data (like tokens) across components.
-
-Visual Effects:
-
-Motion effects using Framer Motion
-
-Lazy Loading for better performance
-
-Temporary falling coin animation on initial load
-
-Routing:
-
-Managed with React Router and Suspense for smooth transitions
-
-Includes modals and popups for enhanced interaction
-
-Translation Ready:
-
-Fully supports multilingual interfaces via i18n.
-
-Additional Files
-app.css: General styling and responsive design
-
-App.jsx: Main application file, handles routing and context providers
-
-api.jsx: Handles API calls for login, register, etc.
-
-React + Vite
-This project uses Vite for fast development and bundling, with built-in HMR and lightweight ESLint configuration.
-
-Uses @vitejs/plugin-react for Fast Refresh
-
-Ready to expand into TypeScript with typescript-eslint for scalable production apps
+> Built with ❤️ by Lelas Al Asad and team – 2025
