@@ -1,24 +1,22 @@
-// src/pages/Register.jsx
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../App.css';
-import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa'; // أضفنا FaSpinner هنا
-import { useTranslation } from 'react-i18next';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { registerUser } from '../services/api';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { registerUser } from "../services/api";
 
 const Register = () => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birthDate: '',
-    answerSecurity: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    birthDate: "",
+    answerSecurity: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -26,27 +24,29 @@ const Register = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
 
-  const validateName = name => /^[A-Za-z]+$/.test(name);
-  const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = pwd => pwd.length >= 8;
+  const validateName = (name) => /^[A-Za-z]+$/.test(name);
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePassword = (pwd) => pwd.length >= 8;
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(f => ({ ...f, [name]: value }));
+    setFormData((f) => ({ ...f, [name]: value }));
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = {};
 
-    if (!validateName(formData.firstName)) errs.firstName = t('firstNameError');
-    if (!validateName(formData.lastName))  errs.lastName  = t('lastNameError');
-    if (!validateEmail(formData.email))    errs.email     = t('emailError');
-    if (!validatePassword(formData.password)) errs.password = t('passwordLengthError');
+    if (!validateName(formData.firstName)) errs.firstName = t("firstNameError");
+    if (!validateName(formData.lastName)) errs.lastName = t("lastNameError");
+    if (!validateEmail(formData.email)) errs.email = t("emailError");
+    if (!validatePassword(formData.password))
+      errs.password = t("passwordLengthError");
     if (formData.password !== formData.confirmPassword)
-      errs.confirmPassword = t('passwordMismatchError');
-    if (!formData.birthDate)    errs.birthDate    = t('birthDateError');
-    if (!formData.answerSecurity) errs.answerSecurity = t('answerSecurityError');
+      errs.confirmPassword = t("passwordMismatchError");
+    if (!formData.birthDate) errs.birthDate = t("birthDateError");
+    if (!formData.answerSecurity)
+      errs.answerSecurity = t("answerSecurityError");
 
     setErrors(errs);
     if (Object.keys(errs).length) return;
@@ -54,17 +54,17 @@ const Register = () => {
     setLoading(true);
     try {
       localStorage.setItem(
-      'pendingRegistration',
-       JSON.stringify({
-         first_name: formData.firstName,
-         last_name: formData.lastName,
-         email: formData.email,
-         password: formData.password,
-         password_confirmation: formData.confirmPassword,
-         birth_date: formData.birthDate,
-         answer_security: formData.answerSecurity,
-       })
-     );
+        "pendingRegistration",
+        JSON.stringify({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          password_confirmation: formData.confirmPassword,
+          birth_date: formData.birthDate,
+          answer_security: formData.answerSecurity,
+        })
+      );
       const payload = {
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -75,9 +75,8 @@ const Register = () => {
         answer_security: formData.answerSecurity,
       };
       const res = await registerUser(payload);
- toast.success(res.message);
- navigate('/verify-email');
-
+      toast.success(res.message);
+      navigate("/verify-email");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -88,18 +87,18 @@ const Register = () => {
   return (
     <div className="container">
       <div className="form-container">
-        <h2>{t('register')}</h2>
+        <h2>{t("Register")}</h2>
         <form onSubmit={handleSubmit}>
-          {['firstName', 'lastName', 'email', 'birthDate'].map((f, i) => (
+          {["firstName", "lastName", "email", "birthDate"].map((f, i) => (
             <div className="input-group" key={i}>
               <label>{t(f)}:</label>
               <input
-                type={f === 'birthDate' ? 'date' : 'text'}
+                type={f === "birthDate" ? "date" : "text"}
                 placeholder={t(f)}
                 name={f}
                 value={formData[f]}
                 onChange={handleChange}
-                className={errors[f] ? 'error' : ''}
+                className={errors[f] ? "error" : ""}
                 required
               />
               {errors[f] && <div className="error-message">{errors[f]}</div>}
@@ -107,14 +106,14 @@ const Register = () => {
           ))}
 
           <div className="input-group">
-            <label>{t('whatIsYourFavoriteColor')}:</label>
+            <label>{t("whatIsYourFavoriteColor")}:</label>
             <input
               type="text"
-              placeholder={t('whatIsYourFavoriteColor')}
+              placeholder={t("whatIsYourFavoriteColor")}
               name="answerSecurity"
               value={formData.answerSecurity}
               onChange={handleChange}
-              className={errors.answerSecurity ? 'error' : ''}
+              className={errors.answerSecurity ? "error" : ""}
               required
             />
             {errors.answerSecurity && (
@@ -122,41 +121,45 @@ const Register = () => {
             )}
           </div>
 
-          {['password', 'confirmPassword'].map((f, i) => (
+          {["password", "confirmPassword"].map((f, i) => (
             <div className="input-group" key={i}>
               <label>{t(f)}:</label>
               <div className="input-wrapper">
                 <input
                   type={
-                    f === 'confirmPassword'
+                    f === "confirmPassword"
                       ? showConfirm
-                        ? 'text'
-                        : 'password'
+                        ? "text"
+                        : "password"
                       : showPassword
-                      ? 'text'
-                      : 'password'
+                      ? "text"
+                      : "password"
                   }
                   placeholder={t(f)}
                   name={f}
                   value={formData[f]}
                   onChange={handleChange}
-                  className={errors[f] ? 'error' : ''}
+                  className={errors[f] ? "error" : ""}
                   required
                 />
                 <span
                   className="toggle-password"
                   onClick={() => {
-                    if (f === 'password') setShowPassword(s => !s);
-                    else setShowConfirm(s => !s);
+                    if (f === "password") setShowPassword((s) => !s);
+                    else setShowConfirm((s) => !s);
                   }}
                 >
-                  {f === 'password'
-                    ? showPassword
-                      ? <FaEyeSlash />
-                      : <FaEye />
-                    : showConfirm
-                    ? <FaEyeSlash />
-                    : <FaEye />}
+                  {f === "password" ? (
+                    showPassword ? (
+                      <FaEyeSlash />
+                    ) : (
+                      <FaEye />
+                    )
+                  ) : showConfirm ? (
+                    <FaEyeSlash />
+                  ) : (
+                    <FaEye />
+                  )}
                 </span>
               </div>
               {errors[f] && <div className="error-message">{errors[f]}</div>}
@@ -166,22 +169,13 @@ const Register = () => {
           <button type="submit" disabled={loading} className="submit-button">
             {loading ? (
               <>
-                <FaSpinner className="spinner" /> {t('sendingCode')}
+                <FaSpinner className="spinner" /> {t("sendingCode")}
               </>
             ) : (
-              t('register')
+              t("Register")
             )}
           </button>
         </form>
-
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar
-          closeOnClick
-          rtl
-          pauseOnHover
-        />
       </div>
     </div>
   );

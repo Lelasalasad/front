@@ -3,33 +3,32 @@
 =======================================*/
 :root {
   --background-light: #f4f4f4;
-  --background-dark:  #2b2b2b;
+  --background-dark: #2b2b2b;
   --text-light: #333;
   --text-dark: #ffffff;
-  --input-border-light:#007bff;
+  --input-border-light: #007bff;
   --input-border-dark: #ffffff;
   --sidebar-width: 250px;
   --sidebar-gap: -60px;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  min-height: 100vh; /* تأكد أن الطول يغطي كامل الشاشة */
+  font-family: "Cairo", sans-serif;
+  min-height: 100vh; 
   margin: 0;
   padding: 0;
   position: relative;
   background: var(--background-light);
-  background-size: cover; /* يغطي كامل الصفحة */
+  background-size: cover; 
   background-position: center;
-  background-attachment: fixed; /* يظل ثابت عند التمرير */
+  background-attachment: fixed; 
   background-repeat: no-repeat;
   color: var(--text-light);
   direction: ltr;
 }
 
-
 body.ar {
-  font-family: 'Cairo', sans-serif;
+  font-family: "Cairo", sans-serif;
   direction: rtl;
   text-align: right;
 }
@@ -56,7 +55,20 @@ body.dark-mode {
 .app-background.dark-mode {
   background: var(--background-dark);
 }
-
+p,
+input,
+select,
+button,
+.input-group label,
+.nav-links a,
+.nav-link,
+.currency-label,
+.currency-value,
+.transactions-link,
+.transactions-button,
+.Toastify__toast {
+  font-family: "Cairo", sans-serif;
+}
 /*=======================================
 =         العملات الطائرة (Coins)       =
 =======================================*/
@@ -64,7 +76,7 @@ body.dark-mode {
   position: fixed;
   width: 60px;
   height: 60px;
-  background: url('/lo.png') no-repeat center;
+  background: url("/lo.png") no-repeat center;
   background-size: cover;
   pointer-events: none;
   z-index: 0;
@@ -72,14 +84,24 @@ body.dark-mode {
 }
 
 @keyframes floatCoin {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(100vh); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
 }
 
 @keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 0.5; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /*=======================================
@@ -90,7 +112,6 @@ body.dark-mode {
 .form-container,
 .welcome-container,
 .transactions-container {
-  /* نفس الإزاحة العلوية والسفلية لكل الحاويات */
   margin-top: -10px;
   margin-left: calc(var(--sidebar-width) + var(--sidebar-gap));
   width: calc(100% - var(--sidebar-width) - var(--sidebar-gap) * 2);
@@ -122,7 +143,7 @@ body.dark-mode {
   position: relative;
   flex: 1;
   padding: 80px;
-  background-color:#ffffff;
+  background-color: #ffffff;
   color: var(--text-light);
   opacity: 0.9;
   border-radius: 10px;
@@ -143,9 +164,13 @@ body.dark-mode .form-container {
   opacity: 1;
 }
 
-.form-container::-webkit-scrollbar { display: none; }
-.form-container { -ms-overflow-style: none; scrollbar-width: none; }
-
+.form-container::-webkit-scrollbar {
+  display: none;
+}
+.form-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /*=======================================
 =        شريط التنقل (Navbar)            =
@@ -166,7 +191,7 @@ body.dark-mode .form-container {
 
 .navbar.scrolled,
 body.dark-mode .navbar {
-  background: rgba(0, 110, 253, 0.746);
+  background: linear-gradient(135deg, #1a1a1a, #3a3a3a);
 }
 
 .logo {
@@ -183,9 +208,15 @@ body.dark-mode .navbar {
 }
 
 @keyframes logoAnimation {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .menu-icon,
@@ -198,7 +229,9 @@ body.dark-mode .navbar {
   z-index: 1001;
 }
 
-.menu-icon { display: none; }
+.menu-icon {
+  display: none;
+}
 
 .nav-links {
   display: flex;
@@ -208,10 +241,9 @@ body.dark-mode .navbar {
   margin-top: 50px;
   gap: 90px;
   width: 100%;
-  max-height:900px; 
-  overflow-y: auto; 
+  max-height: 900px;
+  overflow-y: auto;
   scrollbar-width: none;
-  
 }
 
 .nav-links a,
@@ -258,13 +290,13 @@ body.dark-mode .navbar {
 
 .edit-icon {
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: #007bff;
   margin-left: 10px;
 }
 
 .profile-input {
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: #222;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
@@ -303,7 +335,6 @@ body.dark-mode .navbar {
   background: #1282fb;
 }
 
-/* دعم الوضع العربي */
 body.ar .nav-links {
   flex-direction: row-reverse;
 }
@@ -325,9 +356,9 @@ body.ar .navbar-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items:center;
-  
-  max-width:1370px;
+  align-items: center;
+
+  max-width: 1370px;
   min-height: 400px;
   margin-top: 70px;
   margin-left: 470px;
@@ -341,7 +372,6 @@ body.ar .navbar-container {
   gap: 30px;
   padding: 20px;
   box-sizing: border-box;
-
 }
 
 .welcome-content {
@@ -354,19 +384,17 @@ body.ar .navbar-container {
   border-radius: 10px;
   box-shadow: none;
   text-align: center;
- /* margin-top:200px ;*/
+  /* margin-top:200px ;*/
   margin-bottom: 70px;
   margin-left: 80px;
-  
-
 }
 
 body.dark-mode .welcome-content {
   background-color: #333;
   color: var(--text-dark);
 }
-body.dark-mode .welcome-content p{
-  color: var(--text-dark); /* تغيير لون النص */
+body.dark-mode .welcome-content p {
+  color: var(--text-dark); 
 }
 body.dark-mode .welcome-container {
   background-color: #333;
@@ -376,33 +404,27 @@ body.dark-mode .welcome-container {
 .welcome-content:hover {
   transform: scale(1.02);
   opacity: 1;
-    
-
 }
 
 .welcome-message {
-
   margin-left: 50px;
- 
+
   font-size: 40px;
   color: var(--text-light);
   text-shadow: 1px 1px 2px rgba(224, 22, 22, 0.7);
   margin-bottom: 2.5rem;
 }
 
-/* صف الأيقونات تحت النص الترحيبي */
 .icon-row {
-  
   display: flex;
-  gap: 30px;              /* تباعد بين الأيقونات */
-  justify-content: center;/* توسيط الأيقونات أفقياً */
-  margin: 20px 0;         /* مسافة فوق وتحت الأيقونات */
+  gap: 30px; 
+  justify-content: center; 
+  margin: 20px 0; 
 }
 
-/* حجم ولون الأيقونات */
 .money-icon {
   font-size: 3rem;
-  color: #286db3;         /* لون ذهبي متناسق مع تصميمك */
+  color: #286db3; 
   transition: transform 0.3s;
 }
 
@@ -420,27 +442,36 @@ body.dark-mode .welcome-container {
   animation: slide-in 0.5s forwards cubic-bezier(0.6, 0.04, 0.98, 0.34);
   animation-delay: var(--delay);
   margin-right: 10px;
-  font-family: 'Bungee Spice', cursive  !important;
-  color: #1E3A8A !important;
+  font-family: "Bungee Spice", cursive !important;
+  color: #1e3a8a !important;
 }
 
 .bold-font {
-  font-family: 'Nabla', cursive;
+  font-family: "Cairo", sans-serif;
   font-size: 3rem;
   text-align: center;
 }
 
 @keyframes slide-in {
-  from { transform: translateX(-20px); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
-
 
 /*=======================================
 =       النصوص والعناوين (Typography)   =
 =======================================*/
-h1, h2, h3, h4, h5 {
-  font-family: 'Playfair Display', serif;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Cairo", sans-serif;
   text-align: center;
   color: #0056b3;
   text-shadow: 1px 1px 3px rgba(3, 121, 205, 0.732);
@@ -449,18 +480,26 @@ h1, h2, h3, h4, h5 {
   border-radius: 10px;
   display: inline-block;
 }
-h1 { font-size: 3rem; }
-h2 { font-size: 3rem; }
-h3 { font-size: 2rem; }
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 3rem;
+}
+h3 {
+  font-size: 2rem;
+}
 h4 {
   font-size: 3rem;
   background-color: rgba(30, 41, 59, 0.6);
   color: #286db3;
 }
-h5 { color: var(--text-light); }
+h5 {
+  color: var(--text-light);
+}
 
 p {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Cairo", sans-serif;
   font-size: 1.9em;
   margin: 15px 0 50px;
   padding: 10px;
@@ -468,6 +507,15 @@ p {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+  color: #4ea8de;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
 
 /*=======================================
 =              النموذج (Form Elements)   =
@@ -491,15 +539,19 @@ form {
   text-shadow: 1px 1px 2px rgba(5, 1, 1, 0.7);
   font-size: 1.5em;
 }
+body.dark-mode .input-group label {
+  color: #4ea8de;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
 
-input, select {
+input,
+select {
   padding: 1rem;
   border: 1px solid var(--input-border-light);
   border-radius: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   width: 100%;
 }
-
 
 /*=======================================
 =              الأزرار (Buttons)         =
@@ -508,13 +560,13 @@ button {
   width: 100%;
   padding: 1rem;
   background: linear-gradient(90deg, #0056b3, #007bff);
-  color:white;
+  color: white;
   text-shadow: 1px 1px 2px rgba(5, 1, 1, 0.7);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 button:hover {
@@ -528,30 +580,64 @@ button:hover {
   justify-content: space-between;
   margin-top: 20px;
 }
-.button-group button { margin-left: 10px; }
+.button-group button {
+  margin-left: 10px;
+}
 
-.register-link { text-align: center; margin-top: 15px; }
-a { color: var(--input-border-light); text-shadow: 1px 1px 2px hwb(211 3% 6% / 0.916); }
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+}
+.register-link p {
+  margin-bottom: 4px; 
+  font-size: 23px; 
+}
 
+a {
+  color: var(--input-border-light);
+  text-shadow: 1px 1px 2px hwb(211 3% 6% / 0.916);
+}
+body.dark-mode a {
+  color: #4ea8de;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  transition: color 0.3s ease;
+}
+
+body.dark-mode a:hover {
+  color: #90cdf4;
+  text-decoration: underline;
+}
+
+body.dark-mode button {
+  background: linear-gradient(90deg, #0d3b66, #145da0);
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode button:hover {
+  background: linear-gradient(90deg, #145da0, #0d3b66);
+  box-shadow: 0 0 15px rgba(20, 93, 160, 0.6);
+}
 
 /*=======================================
 =          العمليات (Transactions)       =
 =======================================*/
 .transactions-container {
-background-color: #ffffff;
+  background-color: #ffffff;
   color: var(--text-light);
   opacity: 0.9;
-    border-radius: 10px;
+  border-radius: 10px;
   padding: 30px;
   margin-left: 190px;
   height: 700px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   text-align: center;
   color: #ffffff;
-max-width: 1200px;  
+  max-width: 1200px;
   display: block;
-  
-    flex-wrap: nowrap;
+
+  flex-wrap: nowrap;
 }
 .transactions-container:hover {
   transform: scale(1.02);
@@ -573,6 +659,7 @@ body.dark-mode .transactions-container {
 
 .transactions-link,
 .transactions-button {
+  font-family: "Cairo", sans-serif;
   padding: 12px 24px;
   background: linear-gradient(90deg, #07568e, #286db3);
   color: #ffffff;
@@ -586,8 +673,8 @@ body.dark-mode .transactions-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  
-   margin: 65px;
+
+  margin: 65px;
 }
 .transactions-button:hover,
 .transactions-link:hover {
@@ -597,17 +684,18 @@ body.dark-mode .transactions-container {
 }
 .transactions-actions {
   margin-bottom: 2rem;
-  display:ruby-base-container;
+  display: ruby-base-container;
   gap: 10rem;
   justify-content: space-between;
   width: 1000px;
 }
 
-
 /*=======================================
 =            تحسينات (Enhancements)     =
 =======================================*/
-.input-wrapper { position: relative; }
+.input-wrapper {
+  position: relative;
+}
 .toggle-password {
   position: absolute;
   right: 10px;
@@ -622,28 +710,67 @@ body.dark-mode .transactions-container {
   margin-right: 8px;
 }
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-.error { border: 2px solid red; }
-.error-message { color: red; margin-top: 5px; font-size: 1em; }
-.success-message { color: green; margin-bottom: 15px; font-weight: bold; }
+.error {
+  border: 2px solid red;
+}
+.error-message {
+  color: red;
+  margin-top: 5px;
+  font-size: 1em;
+}
+.success-message {
+  color: green;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
 
+.Toastify__toast {
+  font-size: 18px; 
+  font-weight: bold;
+  direction: rtl; 
+}
 
+.Toastify__toast-body {
+  color: #fff;
+}
+
+.Toastify__toast-body span,
+.Toastify__toast-body strong {
+  color: #ffd700; 
+}
+
+.Toastify__toast-body {
+  color: #fff;
+}
+.Toastify__toast-body
+  :is(span, strong):has([class*="number"], [class*="count"]) {
+  color: #00e1ff;
+}
 /*=======================================
 =           Media Queries               =
 =======================================*/
+
 @media (max-width: 1024px) {
   .main-container,
   .container,
   .form-container,
   .welcome-container,
   .transactions-container,
-  .form-container.wallet-container {
+  .form-container.wallet-container,
+  .form-container.profile-container {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 10px !important;
     width: 100% !important;
+    max-width: 100% !important;
   }
+
   .navbar {
     width: 100%;
     flex-direction: row;
@@ -651,7 +778,9 @@ body.dark-mode .transactions-container {
     height: auto;
     position: relative;
     box-shadow: none;
+    padding: 10px 20px;
   }
+
   .nav-links {
     display: none;
     position: absolute;
@@ -660,111 +789,395 @@ body.dark-mode .transactions-container {
     right: 0;
     background: #222;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     gap: 20px;
     text-align: center;
+    flex-direction: column;
+    z-index: 1000;
   }
-  .nav-links.active { display: flex; }
-  .menu-icon { display: block; margin-left: auto; }
-  .form-container { width: 90%; padding: 20px; }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a,
+  .nav-link {
+    font-size: 1.2rem;
+    margin-left: 0;
+    padding: 8px;
+  }
+
+  .menu-icon {
+    display: block;
+    margin-left: auto;
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    height: 80px;
+    width: 90px;
+  }
+
+  .coin {
+    width: 40px;
+    height: 40px;
+    animation: floatCoin 5s linear infinite, fadeOut 3s forwards;
+  }
+
+  .falling-word {
+    font-size: 1.5rem;
+    margin-right: 5px;
+    margin-top: 50px;
+  }
+
+  .bold-font {
+    font-size: 2rem;
+  }
+
+  .form-container {
+    width: 90%;
+    padding: 20px;
+    max-height: 70vh;
+  }
+
+  .money-icon,
+  .user-icon,
+  .calendar-icon {
+    font-size: 2rem;
+  }
+
+  .icon-row {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .balances-container,
+  .card-grid {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card.balance-card {
+    padding: 20px;
+    background-size: 300px 100%, 300px 100%, cover;
+  }
+
+  .currency-label {
+    font-size: 2rem;
+  }
+
+  .currency-value {
+    font-size: 1.8rem;
+  }
+
+  .pending-table,
+  .history-table {
+    font-size: 16px;
+  }
+
+  .pending-table th,
+  .pending-table td,
+  .history-table th,
+  .history-table td {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .transactions-link,
+  .transactions-button {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    margin: 20px;
+  }
+
+  .transactions-actions {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .Toastify__toast {
+    font-size: 16px;
+  }
+
+  body.ar .navbar {
+    padding: 10px 20px;
+  }
+
+  body.ar .nav-links {
+    text-align: right;
+  }
+
+  body.ar .nav-links a,
+  body.ar .nav-link {
+    margin-left: 0;
+    margin-right: 20px;
+  }
 }
 
 @media (max-width: 768px) {
-  .balances-container,
-  .card-grid { flex-direction: column; }
   .navbar {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    height: auto;
-    padding: 10px 20px;
-  }
-  .main-container,
-  .container,
-  .form-container,
-  .welcome-container,
-  .transactions-container,
-  .form-container.wallet-container {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-  }
-  .menu-icon {
-    display: block;
-  }
-  .nav-links {
-    position: absolute;
-    top: 60px;      /* تحت الشريط */
-    left: 0;
-    right: 0;
-    background: #222;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    display: none;  /* مخفية */
-    z-index: 1000;
-  }
-  .nav-links.active {
-    display: flex;
+    padding: 15px;
   }
 
+  .nav-links {
+    top: 120px;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .logo {
+    height: 60px;
+    width: 70px;
+  }
+
+  .container {
+    padding: 15px;
+    min-height: 500px;
+  }
+
+  .form-container {
+    padding: 15px;
+  }
+
+  .welcome-container {
+    margin-left: 0;
+    padding: 15px;
+    min-height: 300px;
+  }
+
+  .transactions-container {
+    margin-left: 0;
+    padding: 15px;
+    height: auto;
+  }
+
+  h1,
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  h3,
+  h4 {
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  .coin {
+    width: 30px;
+    height: 30px;
+  }
+
+  .falling-word {
+    font-size: 1.2rem;
+  }
+
+  .bold-font {
+    font-size: 1.8rem;
+  }
+
+  .money-icon,
+  .user-icon,
+  .calendar-icon {
+    font-size: 1.8rem;
+  }
+
+  .card.balance-card {
+    padding: 15px;
+    background-size: 250px 100%, 250px 100%, cover;
+  }
+
+  .currency-label {
+    font-size: 1.8rem;
+  }
+
+  .currency-value {
+    font-size: 1.6rem;
+  }
+
+  .pending-table,
+  .history-table {
+    font-size: 14px;
+  }
+
+  .pending-table th,
+  .pending-table td,
+  .history-table th,
+  .history-table td {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .approve-btn {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+
+  .transactions-link,
+  .transactions-button {
+    font-size: 1.3rem;
+    padding: 8px 15px;
+  }
 }
 
-
 @media (max-width: 320px) {
-  .main-container,
-  .container,
-  .form-container,
-  .welcome-container,
-  .transactions-container,
-  .form-container.wallet-container {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-  }
-  .navbar {
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    padding: 10px 20px;
-  }
-  .menu-icon {
-    display: block;
-  }
-  .nav-links {
-    position: absolute;
-    top: 60px;      /* تحت الشريط */
-    left: 0;
-    right: 0;
-    background: #222;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    display: none;  /* مخفية */
-    z-index: 1000;
-  }
-  .nav-links.active {
-    display: flex;
+  body {
+    font-size: 0.875rem;
   }
 
-  body { font-size: 0.875rem; }
-  .logo { height: 50px; }
-  .form-container { padding: 1.5rem; }
-  .input-group label { font-size: 0.9em; }
-  input, select { padding: 10px; font-size: 0.8em; }
-  button { padding: 10px; font-size: 0.9em; }
-  p { font-size: 1em; }
-  h1 { font-size: 2em; }
-  h2 { font-size: 1.8em; }
-  h3 { font-size: 1.6em; }
+  .logo {
+    height: 50px;
+    width: 60px;
+  }
+
+  .nav-links {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .nav-links a,
+  .nav-link {
+    font-size: 1rem;
+    padding: 6px;
+  }
+
+  .menu-icon {
+    font-size: 1rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+    max-height: 60vh;
+  }
+
+  .welcome-container {
+    margin-top: 20px;
+    padding: 10px;
+  }
+
+  .transactions-container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    font-size: 1.6rem;
+  }
+
+  h4 {
+    font-size: 1.4rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+
+  .input-group label {
+    font-size: 0.9rem;
+  }
+
+  input,
+  select {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .coin {
+    width: 25px;
+    height: 25px;
+    animation: floatCoin 4s linear infinite, fadeOut 2.5s forwards;
+  }
+
+  .falling-word {
+    font-size: 1rem;
+    margin-right: 3px;
+    margin-top: 30px;
+  }
+
+  .bold-font {
+    font-size: 1.5rem;
+  }
+
+  .money-icon,
+  .user-icon,
+  .calendar-icon {
+    font-size: 1.5rem;
+  }
+
+  .icon-row {
+    gap: 10px;
+  }
+
+  .card.balance-card {
+    padding: 10px;
+    background-size: 200px 100%, 200px 100%, cover;
+  }
+
+  .currency-label {
+    font-size: 1.5rem;
+  }
+
+  .currency-value {
+    font-size: 1.3rem;
+  }
+
+  .pending-table,
+  .history-table {
+    font-size: 12px;
+  }
+
+  .pending-table th,
+  .pending-table td,
+  .history-table th,
+  .history-table td {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+
+  .approve-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .transactions-link,
+  .transactions-button {
+    font-size: 1.1rem;
+    padding: 6px 10px;
+    margin: 10px;
+  }
+
+  .Toastify__toast {
+    font-size: 14px;
+  }
+
+  body.ar .navbar {
+    padding: 10px;
+  }
+
+  body.ar .nav-links a,
+  body.ar .nav-link {
+    margin-right: 10px;
+  }
 }
 
 /*=======================================
@@ -773,21 +1186,20 @@ body.dark-mode .transactions-container {
 
 .form-container.wallet-container {
   margin-left: 217px;
-    margin-top: 20px;
-    max-width: 1200px;
-
+  margin-top: 20px;
+  max-width: 1200px;
 }
-.form-container.profile-container{
-margin-left: 200px;
-    margin-top: -9px;
-    max-width: 1200px;
+.form-container.profile-container {
+  margin-left: 200px;
+  margin-top: -9px;
+  max-width: 1200px;
 }
 .welcome-heading {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
   color: #286db3;
   text-shadow: 0 4px 8px rgba(26, 121, 175, 0.708);
   margin-bottom: 20px;
@@ -798,7 +1210,7 @@ margin-left: 200px;
   color: #286db3;
 }
 .balance-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: "Cairo", sans-serif;
   font-size: 1.8rem;
   color: #f7f6f5;
   text-align: center;
@@ -825,14 +1237,13 @@ margin-left: 200px;
 }
 
 .balance-card.currency-usd {
-  background-image:
-  linear-gradient(
-   to right,
-      rgba(255,255,255,0.6) 0%,   
-      rgba(255, 255, 255, 0.268) 40%,  
-      rgba(255,255,255,0)   100%  
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.268) 40%,
+      rgba(255, 255, 255, 0) 100%
     ),
-    url('/flags/USD.png'),
+    url("/flags/USD.png"),
     linear-gradient(
       to right,
       rgba(60, 59, 110, 0.851) 40%,
@@ -844,38 +1255,36 @@ margin-left: 200px;
 }
 
 .balance-card.currency-try {
-  background-image:
-  linear-gradient(
-   to right,
-      rgba(255,255,255,0.6) 0%,   
-      rgba(255, 255, 255, 0.268) 40%, 
-      rgba(255,255,255,0)   100%  
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.268) 40%,
+      rgba(255, 255, 255, 0) 100%
     ),
-    url('/flags/TYR.png'),
+    url("/flags/TYR.png"),
     linear-gradient(
       to right,
       rgba(230, 6, 6, 0.874) 40%,
       rgba(255, 253, 253, 0.8) 100%
     );
- background-repeat: no-repeat, no-repeat, no-repeat;
+  background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: left center, left center, left top;
   background-size: 400px 100%, 400px 100%, cover;
 }
 .balance-card.currency-syp {
-  background-image:
-  linear-gradient(
-   to right,
-      rgba(255,255,255,0.6) 0%,   
-      rgba(255, 255, 255, 0.268) 40%,  
-      rgba(255,255,255,0)   100% 
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.268) 40%,
+      rgba(255, 255, 255, 0) 100%
     ),
-    url('/flags/SYR.png'),
+    url("/flags/SYR.png"),
     linear-gradient(
       to right,
       rgba(6, 115, 61, 0.953) 40%,
       rgba(255, 253, 253, 0.8) 100%
     );
- background-repeat: no-repeat, no-repeat, no-repeat;
+  background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: left center, left center, left top;
   background-size: 400px 100%, 400px 100%, cover;
 }
@@ -884,14 +1293,12 @@ margin-left: 200px;
   font-size: 2.6rem;
   margin-bottom: 10px;
   color: #0b0101;
-    text-shadow: 0 8px 20px rgb(6, 0, 0);
-
+  text-shadow: 0 8px 20px rgb(6, 0, 0);
 }
 .currency-value {
   font-size: 2.4rem;
   font-weight: bold;
   text-shadow: 0 8px 20px rgba(242, 222, 222, 0.4);
-
 }
 .card.balance-card:hover {
   transform: translateY(-5px);
@@ -910,6 +1317,7 @@ margin-left: 200px;
   background-color: #ddd;
   cursor: pointer;
   border-radius: 8px;
+  font-size: 25px;
 }
 
 .tabs button.active {
@@ -927,6 +1335,7 @@ margin-left: 200px;
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  font-size: 20px;
 }
 
 .pending-table th,
@@ -936,6 +1345,7 @@ margin-left: 200px;
   border: 1px solid #ccc;
   padding: 8px 12px;
   text-align: center;
+  font-size: 20px;
 }
 
 .pending-table th {
@@ -949,15 +1359,16 @@ margin-left: 200px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .approve-btn:hover {
   background-color: #45a049;
 }
-.form-container.log{
+.form-container.log {
   max-width: 1200px;
-
 }
+
 .history-table {
   width: 100%;
   border-collapse: collapse;
@@ -975,4 +1386,62 @@ margin-left: 200px;
 .history-table th {
   background-color: #f2f2f2;
   font-weight: bold;
+}
+.title-with-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.calendar-icon {
+  font-size: 30px;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #444;
+  transition: transform 0.2s;
+}
+
+.calendar-icon:hover {
+  transform: scale(1.1);
+}
+
+/* الوضع الليلي */
+.dark-mode .pending-table,
+.dark-mode .history-table {
+  background-color: #333;
+  color: #f1f1f1;
+}
+
+.dark-mode .pending-table th,
+.dark-mode .history-table th {
+  background-color: #333;
+  color: #f1f1f1;
+}
+
+.dark-mode .pending-table td,
+.dark-mode .history-table td {
+  border: 1px solid #444;
+}
+
+.dark-mode .tabs button {
+  background-color: #e0d2d2;
+  color: #ccc;
+}
+
+.dark-mode .tabs button.active {
+  background-color: #888;
+  color: white;
+}
+
+.dark-mode .approve-btn {
+  background-color: #2e7d32;
+}
+
+.dark-mode .approve-btn:hover {
+  background-color: #1b5e20;
+}
+.dark-mode .calendar-icon {
+  color: #ccc;
 }

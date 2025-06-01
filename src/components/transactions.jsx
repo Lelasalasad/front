@@ -27,7 +27,7 @@ const Transactions = () => {
     return (
         <div className="container">
             <div className="transactions-container">
-                <h2>{t('transactions')}</h2>
+                <h2>{t('Transactions')}</h2>
                 <div className="transactions-actions">
                     <button onClick={() => handleLoading('transfer', '/In_wallet_exchange')} disabled={loading.transfer} className="transactions-button">
                         {loading.transfer ? <FaSpinner className="spinner" /> : t('In_wallet_exchange')}

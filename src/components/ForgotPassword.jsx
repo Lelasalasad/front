@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { motion } from 'framer-motion';
-import { ToastContainer, toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
-import 'react-toastify/dist/ReactToastify.css';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../App.css';
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import "react-toastify/dist/ReactToastify.css";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../App.css";
 
 export default function ForgotPassword() {
   const { t } = useTranslation();
@@ -16,58 +16,63 @@ export default function ForgotPassword() {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      resetCode: '',
-      securityAnswer: '',
-      newPassword: '',
-      confirmPassword: '',
+      email: "",
+      resetCode: "",
+      securityAnswer: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email(t('invalidEmail')).required(t('required')),
-      resetCode: Yup.string().required(t('verificationCodeRequired')),
-      securityAnswer: Yup.string().required(t('answerSecurityError')),
-      newPassword: Yup.string().min(8, t('passwordMinLength')).required(t('required')),
+      email: Yup.string().email(t("invalidEmail")).required(t("required")),
+      resetCode: Yup.string().required(t("verificationCodeRequired")),
+      securityAnswer: Yup.string().required(t("answerSecurityError")),
+      newPassword: Yup.string()
+        .min(8, t("passwordMinLength"))
+        .required(t("required")),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref('newPassword')], t('passwordsMustMatch'))
-        .required(t('required')),
+        .oneOf([Yup.ref("newPassword")], t("passwordsMustMatch"))
+        .required(t("required")),
     }),
     onSubmit: () => {},
   });
 
-  // ارسال كود اعادة التعيين
   const handleSendCode = async (e) => {
     e.preventDefault();
-    await formik.validateField('email');
+    await formik.validateField("email");
     if (formik.errors.email) return;
 
     try {
       const { data, status } = await axios.post(
-        'http://localhost:8000/api/forgot_password',
+        "http://localhost:8000/api/forgot_password",
         { email: formik.values.email }
       );
       if (status === 200) {
         setIsCodeSent(true);
         toast.success(data.message);
       } else {
-        toast.error(data.message || t('errorOccurred'));
+        toast.error(data.message || t("errorOccurred"));
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || t('errorOccurred'));
+      toast.error(err.response?.data?.message || t("errorOccurred"));
     }
   };
 
-  // اعادة تعيين كلمة المرور
   const handleReset = async (e) => {
     e.preventDefault();
     const errors = await formik.validateForm();
     if (Object.keys(errors).length) {
-      formik.setTouched({ resetCode: true, securityAnswer: true, newPassword: true, confirmPassword: true });
+      formik.setTouched({
+        resetCode: true,
+        securityAnswer: true,
+        newPassword: true,
+        confirmPassword: true,
+      });
       return;
     }
 
     try {
       const { data, status } = await axios.post(
-        'http://localhost:8000/api/reset_password',
+        "http://localhost:8000/api/reset_password",
         {
           email: formik.values.email,
           reset_code: formik.values.resetCode,
@@ -77,19 +82,19 @@ export default function ForgotPassword() {
         }
       );
       if (status === 200) {
-        toast.success(data.message || t('passwordResetSuccess'));
-        setTimeout(() => navigate('/login'), 2000);
+        toast.success(data.message || t("passwordResetSuccess"));
+        setTimeout(() => navigate("/login"), 2000);
       } else {
-        toast.error(data.message || t('errorOccurred'));
+        toast.error(data.message || t("errorOccurred"));
       }
     } catch (err) {
-      console.error('Reset Error Response:', err.response?.data);
+      console.error("Reset Error Response:", err.response?.data);
       if (err.response?.status === 422 && err.response.data.errors) {
         Object.values(err.response.data.errors)
           .flat()
-          .forEach(msg => toast.error(msg));
+          .forEach((msg) => toast.error(msg));
       } else {
-        toast.error(err.response?.data?.message || t('errorOccurred'));
+        toast.error(err.response?.data?.message || t("errorOccurred"));
       }
     }
   };
@@ -102,63 +107,73 @@ export default function ForgotPassword() {
       transition={{ duration: 0.5 }}
     >
       <div className="form-container log">
-        <h2>{t('forgotPassword')}</h2>
+        <h2>{t("forgotPassword")}</h2>
 
         {!isCodeSent && (
           <form onSubmit={handleSendCode}>
             <div className="input-group">
-              <label>{t('email')}:</label>
-              <input type="email" {...formik.getFieldProps('email')} />
+              <label>{t("email")}:</label>
+              <input type="email" {...formik.getFieldProps("email")} />
               {formik.touched.email && formik.errors.email && (
                 <div className="error-message">{formik.errors.email}</div>
               )}
             </div>
-            <button type="submit" disabled={isCodeSent}>{t('resetpasswordCode')}</button>
+            <button type="submit" disabled={isCodeSent}>
+              {t("resetpasswordCode")}
+            </button>
           </form>
         )}
 
         {isCodeSent && (
           <form onSubmit={handleReset}>
             <div className="input-group">
-              <label>{t('verificationCode')}:</label>
-              <input type="text" {...formik.getFieldProps('resetCode')} />
+              <label>{t("verificationCode")}:</label>
+              <input type="text" {...formik.getFieldProps("resetCode")} />
               {formik.touched.resetCode && formik.errors.resetCode && (
                 <div className="error-message">{formik.errors.resetCode}</div>
               )}
             </div>
 
             <div className="input-group">
-              <label>{t('answerSecurity')}:</label>
-              <input type="text" {...formik.getFieldProps('securityAnswer')} />
-              {formik.touched.securityAnswer && formik.errors.securityAnswer && (
-                <div className="error-message">{formik.errors.securityAnswer}</div>
-              )}
+              <label>{t("answerSecurity")}:</label>
+              <input type="text" {...formik.getFieldProps("securityAnswer")} />
+              {formik.touched.securityAnswer &&
+                formik.errors.securityAnswer && (
+                  <div className="error-message">
+                    {formik.errors.securityAnswer}
+                  </div>
+                )}
             </div>
 
             <div className="input-group">
-              <label>{t('newPassword')}:</label>
-              <input type="password" {...formik.getFieldProps('newPassword')} />
+              <label>{t("newPassword")}:</label>
+              <input type="password" {...formik.getFieldProps("newPassword")} />
               {formik.touched.newPassword && formik.errors.newPassword && (
                 <div className="error-message">{formik.errors.newPassword}</div>
               )}
             </div>
 
             <div className="input-group">
-              <label>{t('confirmPassword')}:</label>
-              <input type="password" {...formik.getFieldProps('confirmPassword')} />
-              {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                <div className="error-message">{formik.errors.confirmPassword}</div>
-              )}
+              <label>{t("confirmPassword")}:</label>
+              <input
+                type="password"
+                {...formik.getFieldProps("confirmPassword")}
+              />
+              {formik.touched.confirmPassword &&
+                formik.errors.confirmPassword && (
+                  <div className="error-message">
+                    {formik.errors.confirmPassword}
+                  </div>
+                )}
             </div>
 
-            <button type="submit">{t('resetPassword')}</button>
+            <button type="submit">{t("resetPassword")}</button>
           </form>
         )}
 
         <Link className="a" to="/login">
-          {t('backToLogin')}
+          {t("backToLogin")}
         </Link>
-        <ToastContainer position="top-center" autoClose={3000} hideProgressBar closeOnClick rtl pauseOnHover />
       </div>
     </motion.div>
   );
